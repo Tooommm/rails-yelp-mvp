@@ -4,8 +4,17 @@ class RestaurantsController < ApplicationController
   end
 
   def show
+    @review = Review.new
     @restaurant = Restaurant.find(params[:id])
-    # @review = Review.find(@restaurant)
+    @total = []
+    if @restaurant.reviews.empty?
+      @moyenne = "No ratings"
+    else
+      @restaurant.reviews.each do |review|
+        @total << review.rating
+      end
+      @moyenne = " #{(@total.sum + 0.0) / @total.size} / 5"
+    end
   end
 
   def new

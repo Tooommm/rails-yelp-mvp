@@ -1,30 +1,34 @@
 <div class="container">
   <h3><%= @restaurant.name %></h3>
 
-  <p>category: <%= @restaurant.category %></p>
-  <p>address: <%= @restaurant.address %></p>
-  <p>phone_number: <%= @restaurant.phone_number %></p>
+  <p>Type of food : <%= @restaurant.category %></p>
+  <p>address : <%= @restaurant.address %></p>
+  <p>phone number: <%= @restaurant.phone_number %></p>
 
   <%= link_to "Return to list", restaurants_path, class: 'btn btn-sm btn-secondary'  %>
-  <%= link_to "Add a review", new_restaurant_review_path(@restaurant), class: 'btn btn-primary'  %>
 </div>
 
-<% @restaurant.reviews.each do |review| %>
-<% total = 0 %>
-<% count = 0 %>
-<% total += review.rating %>
-<% count += 1 %>
-<% @moyenne = total / count %>
-<% end %>
-<h2> Note : <%= @moyenne %> / 5</h2>
+<div class="container">
+  <h2> Average rating : <%= @moyenne %> </h2>
+    <p>
+      <% @restaurant.reviews.each do |review| %>
+        <li> <%= "#{review.rating} / 5 - #{review.content}" %></li>
+        <%= link_to "Remove",
+          review_path(review),
+          method: :delete,
+          data: { confirm: "Are you sure?" } %>
+        </li>
+      <% end %>
+    </p>
+</div>
 
-  <li>
-    <% @restaurant.reviews.each do |review| %>
-      <li> <%= "#{review.rating} / 5 - #{review.content}" %></li>
-      <%= link_to "Remove",
-        review_path(review),
-        method: :delete,
-        data: { confirm: "Are you sure?" } %>
-    </li>
-    <% end %>
-  </li>
+<div class="container">
+  <h3>Do you like <%= @restaurant.name %> ?</h3>
+
+  <%= simple_form_for [@restaurant, @review] do |f| %>
+    <%= f.input :content %>
+    <%= f.input :rating, collection: Review::RATING %>
+    <%= f.submit class: 'btn btn-primary' %>
+  <% end %>
+</div>
+
