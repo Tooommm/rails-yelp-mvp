@@ -1,1 +1,22 @@
-show.html.erb
+<div class="container">
+  <h3><%= @restaurant.name %></h3>
+
+  <p>category: <%= @restaurant.category %></p>
+  <p>address: <%= @restaurant.address %></p>
+  <p>phone_number: <%= @restaurant.phone_number %></p>
+
+  <%= link_to "Return to list", restaurants_path, class: 'btn btn-sm btn-secondary'  %>
+  <%= link_to "Add a review", new_restaurant_review_path(@restaurant), class: 'btn btn-primary'  %>
+</div>
+
+
+  <ul>
+    <% @restaurant.reviews.each do |review| %>
+      <li> <%= "#{review.rating} / 5 : #{review.content}" %></li>
+      <%= link_to "Remove",
+        review_path(review),
+        method: :delete,
+        data: { confirm: "Are you sure?" } %>
+    </li>
+    <% end %>
+  </ul>
