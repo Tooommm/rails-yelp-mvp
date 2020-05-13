@@ -9,14 +9,22 @@
   <%= link_to "Add a review", new_restaurant_review_path(@restaurant), class: 'btn btn-primary'  %>
 </div>
 
+<% @restaurant.reviews.each do |review| %>
+<% total = 0 %>
+<% count = 0 %>
+<% total += review.rating %>
+<% count += 1 %>
+<% @moyenne = total / count %>
+<% end %>
+<h2> Note : <%= @moyenne %> / 5</h2>
 
-  <ul>
+  <li>
     <% @restaurant.reviews.each do |review| %>
-      <li> <%= "#{review.rating} / 5 : #{review.content}" %></li>
+      <li> <%= "#{review.rating} / 5 - #{review.content}" %></li>
       <%= link_to "Remove",
         review_path(review),
         method: :delete,
         data: { confirm: "Are you sure?" } %>
     </li>
     <% end %>
-  </ul>
+  </li>
